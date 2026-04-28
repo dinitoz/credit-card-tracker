@@ -702,7 +702,7 @@ let tab = 'cards', cardFilter = 'all', search = '', selCat = 'dining', bestOwner
 const app = document.getElementById('app');
 
 function render() {
-  let h = detailId ? renderDetail() : (tab === 'cards' ? renderCards() : tab === 'best' ? renderBest() : renderBonus());
+  let h = detailId ? renderDetail() : (tab === 'cards' ? renderCards() : tab === 'best' ? renderBest() : tab === 'bonus' ? renderBonus() : renderSettings());
   h += renderTabs();
   app.innerHTML = h;
   bindEvents();
@@ -713,6 +713,7 @@ function renderTabs() {
     <button class="tab-btn ${tab==='cards'?'active':''}" data-tab="cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>Cards</button>
     <button class="tab-btn ${tab==='best'?'active':''}" data-tab="best"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Best Card</button>
     <button class="tab-btn ${tab==='bonus'?'active':''}" data-tab="bonus"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>Bonuses</button>
+    <button class="tab-btn ${tab==='settings'?'active':''}" data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>More</button>
   </nav>`;
 }
 
@@ -1007,6 +1008,142 @@ function bindEvents() {
   document.querySelectorAll('[data-cat]').forEach(el => el.addEventListener('click', () => { selCat = el.dataset.cat; render(); }));
   document.querySelectorAll('[data-bestowner]').forEach(el => el.addEventListener('click', () => { bestOwner = el.dataset.bestowner; render(); }));
   document.querySelectorAll('[data-updatespend]').forEach(b => b.addEventListener('click', () => { openUpdateSpend(b.dataset.updatespend); }));
+  const importInput = document.getElementById('import-file');
+  if (importInput) importInput.addEventListener('change', (e) => { if (e.target.files[0]) handleImport(e.target.files[0]); e.target.value = ''; });
+}
+
+// ── Settings / Export / Import ──
+function renderSettings() {
+  const cards = Store.getAll();
+  const active = cards.filter(c => c.isActive !== false);
+  const closed = cards.filter(c => c.isActive === false);
+  const lastExport = localStorage.getItem('cardtracker_lastexport') || 'Never';
+
+  let h = `<div class="page active"><h1 class="page-title">More</h1>
+
+    <div class="detail-section">
+      <h3>Export & Backup</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Save your cards as a file. Share it with your spouse or use it to restore after reinstalling.</p>
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px"><span style="color:var(--text3)">Cards to export</span><span>${active.length} active, ${closed.length} closed</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:12px"><span style="color:var(--text3)">Last export</span><span>${esc(lastExport)}</span></div>
+      <button class="btn-primary" style="margin-top:0" onclick="exportCards()">📤 Export Cards</button>
+    </div>
+
+    <div class="detail-section">
+      <h3>Import & Restore</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Load cards from a previously exported file. You can choose to merge with or replace your current cards.</p>
+      <input type="file" id="import-file" accept=".json" style="display:none">
+      <button class="btn-primary" style="margin-top:0;background:var(--surface2)" onclick="document.getElementById('import-file').click()">📥 Import Cards</button>
+    </div>
+
+    <div class="detail-section">
+      <h3>Quick Share</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:12px">Copy all your card data to the clipboard as text. Paste it in Messages, Notes, or email to share with your spouse.</p>
+      <button class="btn-primary" style="margin-top:0;background:var(--surface2)" onclick="copyCardsToClipboard()">📋 Copy to Clipboard</button>
+    </div>
+
+    <div class="detail-section">
+      <h3>Danger Zone</h3>
+      <button class="btn-danger" style="margin-top:0" onclick="clearAllCards()">🗑️ Delete All Cards</button>
+    </div>
+
+    <div style="text-align:center;padding:20px;font-size:12px;color:var(--text3)">Card Tracker v1.5 · ${cards.length} cards total<br>Data stored locally on this device</div>
+  </div>`;
+  return h;
+}
+
+function exportCards() {
+  const cards = Store.getAll();
+  if (!cards.length) { alert('No cards to export.'); return; }
+  const data = { version: 1, exportedAt: new Date().toISOString(), cards };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `card-tracker-backup-${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  localStorage.setItem('cardtracker_lastexport', new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }));
+  render();
+}
+
+function handleImport(file) {
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      let imported;
+      const parsed = JSON.parse(e.target.result);
+      // Support both raw array and wrapped format
+      if (Array.isArray(parsed)) {
+        imported = parsed;
+      } else if (parsed.cards && Array.isArray(parsed.cards)) {
+        imported = parsed.cards;
+      } else {
+        alert('Invalid file format. Expected a Card Tracker export file.'); return;
+      }
+      if (!imported.length) { alert('No cards found in file.'); return; }
+
+      const action = confirm(
+        `Found ${imported.length} card(s).\n\nOK = Merge (add to existing cards)\nCancel = Replace (delete current cards first)`
+      );
+
+      if (action) {
+        // Merge: add cards that don't already exist (by issuer+name+owner combo)
+        const existing = Store.getAll();
+        const existingKeys = new Set(existing.map(c => `${c.issuer}|${c.cardName}|${c.owner}`));
+        let added = 0;
+        imported.forEach(c => {
+          const key = `${c.issuer}|${c.cardName}|${c.owner}`;
+          if (!existingKeys.has(key)) {
+            c.id = crypto.randomUUID();
+            existing.push(c);
+            existingKeys.add(key);
+            added++;
+          }
+        });
+        Store.save(existing);
+        alert(`Merged! Added ${added} new card(s). ${imported.length - added} duplicate(s) skipped.`);
+      } else {
+        // Replace
+        imported.forEach(c => { c.id = crypto.randomUUID(); });
+        Store.save(imported);
+        alert(`Replaced! Loaded ${imported.length} card(s).`);
+      }
+      render();
+    } catch (err) {
+      alert('Error reading file: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function copyCardsToClipboard() {
+  const cards = Store.getAll();
+  if (!cards.length) { alert('No cards to copy.'); return; }
+  const data = { version: 1, exportedAt: new Date().toISOString(), cards };
+  navigator.clipboard.writeText(JSON.stringify(data)).then(() => {
+    alert('Copied! Paste it in Messages or Notes to share.');
+  }).catch(() => {
+    // Fallback: create a textarea
+    const ta = document.createElement('textarea');
+    ta.value = JSON.stringify(data);
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('Copied! Paste it in Messages or Notes to share.');
+  });
+}
+
+function clearAllCards() {
+  const cards = Store.getAll();
+  if (!cards.length) { alert('No cards to delete.'); return; }
+  if (!confirm(`Delete all ${cards.length} card(s)? This cannot be undone.`)) return;
+  if (!confirm('Are you really sure? All card data will be permanently deleted.')) return;
+  Store.save([]);
+  render();
 }
 
 // ── Go ──
