@@ -1110,12 +1110,12 @@ function handleImport(file) {
       );
 
       if (action) {
-        // Merge: add cards that don't already exist (by issuer+name+owner combo)
+        // Merge: add cards that don't already exist (by issuer+name+owner+openDate+last4 combo)
         const existing = Store.getAll();
-        const existingKeys = new Set(existing.map(c => `${c.issuer}|${c.cardName}|${c.owner}`));
+        const existingKeys = new Set(existing.map(c => `${c.issuer}|${c.cardName}|${c.owner}|${c.openDate||''}|${c.lastFourDigits||''}`));
         let added = 0;
         imported.forEach(c => {
-          const key = `${c.issuer}|${c.cardName}|${c.owner}`;
+          const key = `${c.issuer}|${c.cardName}|${c.owner}|${c.openDate||''}|${c.lastFourDigits||''}`;
           if (!existingKeys.has(key)) {
             c.id = crypto.randomUUID();
             existing.push(c);
