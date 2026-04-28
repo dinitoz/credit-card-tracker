@@ -103,6 +103,26 @@ const PRESETS = [
     perks:[
       {name:'0% Intro APR',details:'0% intro APR for 12 months on purchases',isAnnual:false},
     ]},
+  { issuer:'Chase', cardName:'Sapphire Reserve Business', annualFee:795, colorHex:'#283593',
+    benefits:[
+      {category:'travel',multiplier:8,pointType:'Chase UR'},
+      {category:'flights',multiplier:4,pointType:'Chase UR'},
+      {category:'hotels',multiplier:4,pointType:'Chase UR'},
+      {category:'dining',multiplier:3,pointType:'Chase UR'},
+      {category:'online',multiplier:3,pointType:'Chase UR'},
+    ],
+    perks:[
+      {name:'$500 The Edit Hotel Credit',details:'Two $250 credits per year for The Edit hotel bookings (2-night min)',isAnnual:true},
+      {name:'$300 Travel Credit',details:'Annual statement credit for travel purchases',isAnnual:true},
+      {name:'$400 ZipRecruiter Credit',details:'Two $200 credits per year for ZipRecruiter',isAnnual:true},
+      {name:'$200 Google Workspace Credit',details:'Annual credit for Google Workspace subscriptions',isAnnual:true},
+      {name:'$100 Giftcards.com Credit',details:'Two $50 credits per year at Giftcards.com',isAnnual:true},
+      {name:'Sapphire Lounge Access',details:'Chase Sapphire Lounges by The Club for you and 2 guests',isAnnual:false},
+      {name:'Points Boost',details:'Redeem points at up to 2x on hotels and flights through Chase Travel',isAnnual:false},
+      {name:'Global Entry / TSA PreCheck',details:'Up to $120 credit every 4 years',isAnnual:false},
+      {name:'5x Lyft',details:'5x points on eligible Lyft rides through 9/30/27',isAnnual:false},
+      {name:'$120K Spend Bonuses',details:'After $120K/yr: IHG Diamond, SW A-List, $500 SW credit, $500 shopping credit',isAnnual:true},
+    ]},
   // ── Chase Co-branded ──
   { issuer:'Chase', cardName:'United Explorer', annualFee:150, colorHex:'#283593',
     benefits:[
