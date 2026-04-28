@@ -496,6 +496,34 @@ const PRESETS = [
       {name:'$125 AA Flight Discount',details:'$125 off a $750+ AA flight after spending $20,000',isAnnual:true},
     ]},
 
+  { issuer:'Citi', cardName:'AAdvantage Business', annualFee:99, colorHex:'#C62828',
+    benefits:[
+      {category:'flights',multiplier:2,pointType:'AA Miles'},
+      {category:'dining',multiplier:2,pointType:'AA Miles'},
+      {category:'gas',multiplier:2,pointType:'AA Miles'},
+      {category:'online',multiplier:2,pointType:'AA Miles'},
+      {category:'other',multiplier:1,pointType:'AA Miles'},
+    ],
+    perks:[
+      {name:'First Checked Bag Free',details:'Free first checked bag on AA domestic flights for you and up to 8 companions',isAnnual:false},
+      {name:'Preferred Boarding',details:'Group 5 boarding on American Airlines flights',isAnnual:false},
+      {name:'Loyalty Points',details:'Earn 1 Loyalty Point per $1 spent toward AA elite status',isAnnual:false},
+      {name:'25% Inflight Savings',details:'25% back on inflight food, beverages, and Wi-Fi',isAnnual:false},
+    ]},
+  { issuer:'Citi', cardName:'AAdvantage Executive', annualFee:595, colorHex:'#37474F',
+    benefits:[
+      {category:'flights',multiplier:4,pointType:'AA Miles'},
+      {category:'dining',multiplier:2,pointType:'AA Miles'},
+      {category:'hotels',multiplier:2,pointType:'AA Miles'},
+      {category:'other',multiplier:1,pointType:'AA Miles'},
+    ],
+    perks:[
+      {name:'Admirals Club Access',details:'Admirals Club membership for you and authorized users',isAnnual:false},
+      {name:'First & Second Bag Free',details:'Free first and second checked bags on AA flights',isAnnual:false},
+      {name:'Priority Boarding',details:'Group 1 boarding on American Airlines flights',isAnnual:false},
+      {name:'Global Entry / TSA PreCheck',details:'Up to $100 credit',isAnnual:false},
+    ]},
+
   // ═══ CAPITAL ONE (bonus) ═══
   { issuer:'Capital One', cardName:'Venture X', annualFee:395, colorHex:'#283593',
     benefits:[
@@ -543,6 +571,47 @@ const PRESETS = [
       {name:'Transfer Partners',details:'Transfer miles to 15+ airline and hotel partners',isAnnual:false},
     ]},
 
+  { issuer:'Capital One', cardName:'Venture X Business', annualFee:395, colorHex:'#1E3A5F',
+    benefits:[
+      {category:'travel',multiplier:10,pointType:'Cap One Miles'},
+      {category:'hotels',multiplier:5,pointType:'Cap One Miles'},
+      {category:'flights',multiplier:5,pointType:'Cap One Miles'},
+      {category:'other',multiplier:2,pointType:'Cap One Miles'},
+    ],
+    perks:[
+      {name:'$300 Travel Credit',details:'Annual credit for Capital One Business Travel bookings',isAnnual:true},
+      {name:'10,000 Anniversary Miles',details:'10,000 bonus miles each account anniversary',isAnnual:true},
+      {name:'Capital One Lounge Access',details:'Access to Capital One Lounges and Priority Pass',isAnnual:false},
+      {name:'Global Entry / TSA PreCheck',details:'Up to $100 credit every 4 years',isAnnual:false},
+    ]},
+  { issuer:'Capital One', cardName:'Venture Business', annualFee:95, colorHex:'#004D40',
+    benefits:[
+      {category:'travel',multiplier:5,pointType:'Cap One Miles'},
+      {category:'hotels',multiplier:5,pointType:'Cap One Miles'},
+      {category:'other',multiplier:2,pointType:'Cap One Miles'},
+    ],
+    perks:[
+      {name:'Transfer Partners',details:'Transfer miles to 15+ airline and hotel partners',isAnnual:false},
+      {name:'Employee Cards',details:'Free employee cards with no additional fee',isAnnual:false},
+    ]},
+  { issuer:'Capital One', cardName:'Spark Cash Plus', annualFee:150, colorHex:'#37474F',
+    benefits:[
+      {category:'other',multiplier:2,pointType:'Cash Back'},
+    ],
+    perks:[
+      {name:'2% Unlimited Cash Back',details:'Flat 2% cash back on every purchase with no cap',isAnnual:false},
+      {name:'$200 Cash Bonus',details:'$200 bonus each year you spend $200,000+',isAnnual:true},
+      {name:'Charge Card',details:'No preset spending limit — pay in full each month',isAnnual:false},
+    ]},
+  { issuer:'Capital One', cardName:'Spark Cash Select', annualFee:0, colorHex:'#2E7D32',
+    benefits:[
+      {category:'other',multiplier:1.5,pointType:'Cash Back'},
+    ],
+    perks:[
+      {name:'1.5% Unlimited Cash Back',details:'Flat 1.5% cash back on every purchase',isAnnual:false},
+      {name:'Employee Cards',details:'Free employee cards with no additional fee',isAnnual:false},
+    ]},
+
   // ═══ WELLS FARGO (bonus) ═══
   { issuer:'Wells Fargo', cardName:'Autograph', annualFee:0, colorHex:'#C62828',
     benefits:[
@@ -564,6 +633,16 @@ const PRESETS = [
     perks:[
       {name:'2% Everywhere',details:'Flat 2% cash back on all purchases',isAnnual:false},
       {name:'0% Intro APR',details:'0% intro APR for 15 months on purchases and balance transfers',isAnnual:false},
+    ]},
+
+  { issuer:'Wells Fargo', cardName:'Signify Business Cash', annualFee:0, colorHex:'#880E4F',
+    benefits:[
+      {category:'other',multiplier:2,pointType:'Cash Back'},
+    ],
+    perks:[
+      {name:'2% Unlimited Cash Back',details:'Flat 2% cash back on every business purchase',isAnnual:false},
+      {name:'$1,000 Bonus',details:'$1,000 cash back after spending $15,000 in first 3 months',isAnnual:false},
+      {name:'Employee Cards',details:'Free employee cards with no additional fee',isAnnual:false},
     ]},
 
   // ═══ BILT (bonus) ═══
